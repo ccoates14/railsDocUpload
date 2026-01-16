@@ -1,0 +1,14 @@
+<div style="text-align: center; padding: 2rem;">
+  <h1>Welcome to File Manager App</h1>
+  
+  <% if user_signed_in? %>
+    <p style="margin: 2rem 0; font-size: 1.2rem;">
+      You are signed in as <strong><%= current_user.email %></strong>
+    </p>
+    <p>This is your file manager dashboard.</p>
+  <% else %>
+    <p style="margin: 2rem 0; font-size: 1.2rem;">
+      Please <%= link_to "sign in", new_user_session_path %> or <%= link_to "sign up", new_user_registration_path %> to get started.
+    </p>
+  <% end %>
+</div>
