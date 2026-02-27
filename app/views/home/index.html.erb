@@ -6,6 +6,8 @@
       You are signed in as <strong><%= current_user.email %></strong>
     </p>
     <p>This is your file manager dashboard.</p>
+
+    <%= render partial: "files/upload" %>
   <% else %>
     <p style="margin: 2rem 0; font-size: 1.2rem;">
       Please <%= link_to "sign in", new_user_session_path %> or <%= link_to "sign up", new_user_registration_path %> to get started.

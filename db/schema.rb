@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_13_233448) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_27_192122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_233448) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "content_items", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "s3_key", null: false
+    t.boolean "is_folder", default: false, null: false
+    t.bigint "parent_id"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_content_items_on_parent_id"
+    t.index ["user_id"], name: "index_content_items_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -56,4 +68,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_233448) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "content_items", "content_items", column: "parent_id"
+  add_foreign_key "content_items", "users"
 end
