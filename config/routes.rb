@@ -13,5 +13,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  resources :content_items, only: [ :create ]
+  resources :content_items, only: [ :create ] do
+    member do
+      get "download"
+      post "reindex"
+    end
+  end
 end

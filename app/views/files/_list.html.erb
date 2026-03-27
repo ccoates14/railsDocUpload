@@ -1,0 +1,41 @@
+<div style="margin-top: 2rem;">
+    <h2>Your Files</h2>
+
+    <%= form_with url: root_path, method: :get, local: true, style: "margin: 1rem 0;" do |form| %>
+        <%= form.label :q, "Search files by name or extracted text", style: "display: block; margin-bottom: 0.5rem;" %>
+        <%= form.search_field :q, value: @query, placeholder: "Type keywords...", style: "width: 100%; max-width: 500px; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;" %>
+        <p style="margin-top: 0.5rem; color: #666;">New uploads can take a few seconds before they become searchable.</p>
+        <div style="margin-top: 0.5rem;">
+            <%= form.submit "Search", style: "background-color: #007bff; color: white; padding: 0.4rem 0.8rem; border: none; border-radius: 4px; cursor: pointer;" %>
+            <% if @query.present? %>
+                <%= link_to "Clear", root_path, style: "margin-left: 0.5rem; color: #555; text-decoration: none;" %>
+            <% end %>
+        </div>
+    <% end %>
+
+    <% if @content_items.any? %>
+        <ul style="list-style: none; padding: 0;">
+            <% @content_items.each do |item| %>
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                    <%= item.name %>
+                        - <%= link_to "Download", download_content_item_path(item), style: "color: #007bff; text-decoration: none;" %>
+                    <div style="font-size: 0.9rem; color: #666; margin-top: 0.25rem;">
+                        Extraction status: <strong><%= item.extraction_status %></strong>
+                        <% if item.failed? && item.extraction_error.present? %>
+                            <span>- <%= item.extraction_error %></span>
+                        <% end %>
+                        <% if item.failed? %>
+                            - <%= link_to "Reindex", reindex_content_item_path(item), data: { turbo_method: :post }, style: "color: #007bff; text-decoration: underline;" %>
+                        <% end %>
+                    </div>
+                </li>
+            <% end %>
+        </ul>
+    <% else %>
+        <% if @query.present? %>
+            <p>No files matched your search.</p>
+        <% else %>
+            <p>You have not uploaded any files yet.</p>
+        <% end %>
+    <% end %>
+</div>

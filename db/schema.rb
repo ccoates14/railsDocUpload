@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_27_192122) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_27_131500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,7 +50,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_27_192122) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "extracted_text"
+    t.string "extraction_status", default: "pending", null: false
+    t.string "extraction_error"
     t.index ["parent_id"], name: "index_content_items_on_parent_id"
+    t.index ["user_id", "extraction_status"], name: "index_content_items_on_user_id_and_extraction_status"
     t.index ["user_id"], name: "index_content_items_on_user_id"
   end
 
